@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AuraLyn Collective Store Redesign</title>
+<meta name="description" content="Fashionable AuraLyn Collective redesign with product catalog, filters, search, product detail view, cart, and checkout mockup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#171912; --forest:#1f2419; --olive:#48513b; --sage:#d8ddca; --cream:#fbf5e8; --linen:#f3eadb; --gold:#c89b4d; --clay:#a35f4b; --lav:#b9b1dd; --white:#fffdf8; --mist:#edf0e4; --line:rgba(31,36,25,.14); --shadow:0 26px 80px rgba(23,25,18,.16); --radius:24px; }
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5} img{display:block;max-width:100%} button,input,select,textarea{font:inherit} button{cursor:pointer} a{color:inherit;text-decoration:none}
+.announce{background:var(--forest);color:var(--cream);text-align:center;padding:10px 18px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase} .nav{position:sticky;top:0;z-index:40;background:rgba(251,245,232,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)} .nav-inner{max-width:1220px;margin:auto;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px} .brand{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;letter-spacing:.02em} .brand b{color:var(--gold);font-weight:600} .links{display:flex;gap:22px;color:rgba(23,25,18,.68);font-size:14px;font-weight:800} .nav-tools{display:flex;gap:10px;align-items:center} .round-btn{width:42px;height:42px;border-radius:999px;border:1px solid var(--line);background:var(--white);display:grid;place-items:center;color:var(--ink);font-weight:900;position:relative} .cart-count{position:absolute;right:-4px;top:-5px;background:var(--clay);color:var(--white);font-size:11px;border-radius:999px;min-width:19px;height:19px;display:grid;place-items:center}
+.hero{background:var(--forest);color:var(--cream);overflow:hidden;position:relative} .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 14% 14%,rgba(200,155,77,.28),transparent 30%),radial-gradient(circle at 86% 8%,rgba(185,177,221,.2),transparent 28%)} .hero-inner{position:relative;max-width:1220px;margin:auto;min-height:680px;padding:62px 22px 76px;display:grid;grid-template-columns:1fr .9fr;gap:48px;align-items:center} .eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:12px;margin-bottom:18px} h1,h2,h3{margin:0;line-height:1} h1{font-family:'Cormorant Garamond',serif;font-size:clamp(54px,8vw,112px);font-weight:600;letter-spacing:-.02em} .hero p{max-width:600px;color:rgba(251,245,232,.76);font-size:18px;margin:24px 0 30px} .cta-row{display:flex;gap:13px;flex-wrap:wrap} .btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid transparent;border-radius:999px;min-height:50px;padding:14px 22px;font-weight:900;transition:.22s ease} .btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.16)} .primary{background:var(--gold);color:var(--forest)} .secondary{background:rgba(255,255,255,.05);border-color:rgba(251,245,232,.25);color:var(--cream)} .hero-media{position:relative} .hero-card{overflow:hidden;border-radius:36px;transform:rotate(2deg);box-shadow:var(--shadow);border:1px solid rgba(251,245,232,.18)} .hero-card img{width:100%;aspect-ratio:4/5;object-fit:cover} .note{position:absolute;left:-25px;bottom:35px;background:rgba(255,253,248,.94);color:var(--forest);border-radius:18px;padding:18px 20px;max-width:238px;font-weight:800;box-shadow:var(--shadow)} .note small{display:block;color:var(--clay);letter-spacing:.12em;text-transform:uppercase;font-size:11px;margin-bottom:6px}
+.strip{background:var(--gold);color:var(--forest)} .strip-inner{max-width:1220px;margin:auto;padding:14px 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-weight:900;font-size:13px;text-align:center}
+.section{padding:86px 22px} .alt{background:var(--mist)} .dark{background:var(--forest);color:var(--cream)} .wrap{max-width:1220px;margin:auto} .section-head{display:flex;justify-content:space-between;align-items:end;gap:26px;margin-bottom:34px} .kicker{color:var(--clay);font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px} h2{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,72px);font-weight:600} .lead{margin:0;max-width:570px;color:rgba(23,25,18,.66)} .dark .lead{color:rgba(251,245,232,.68)}
+.collections{display:grid;grid-template-columns:repeat(4,1fr);gap:18px} .collection{position:relative;min-height:320px;border-radius:var(--radius);overflow:hidden;background:var(--olive);box-shadow:0 14px 38px rgba(23,25,18,.08)} .collection img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .55s ease} .collection:hover img{transform:scale(1.06)} .collection:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(23,25,18,.78),rgba(23,25,18,.14),transparent)} .collection div{position:absolute;z-index:1;left:18px;right:18px;bottom:18px;color:var(--cream)} .collection h3{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:7px} .collection p{margin:0;color:rgba(251,245,232,.75)}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px} .feature-product{background:var(--white);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 24px rgba(23,25,18,.06)} .feature-product img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--linen)} .feature-product div{padding:15px} .feature-product span{font-size:11px;color:var(--clay);font-weight:900;letter-spacing:.12em;text-transform:uppercase} .feature-product h3{font-size:16px;line-height:1.18;margin:7px 0} .feature-product p{margin:0;font-weight:900}
+.shop-shell{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start} .filters{position:sticky;top:92px;background:var(--white);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 14px 36px rgba(23,25,18,.06)} .filters h3{font-size:14px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px} .field{display:grid;gap:8px;margin-bottom:15px} label{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:var(--olive)} input,select,textarea{border:1px solid var(--line);border-radius:14px;background:var(--cream);padding:13px 14px;color:var(--ink);width:100%} .chip-set{display:flex;flex-wrap:wrap;gap:8px} .chip{border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:9px 12px;font-weight:800;font-size:12px} .chip.active{background:var(--forest);color:var(--cream);border-color:var(--forest)} .shop-top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px} .result-note{font-weight:900;color:var(--olive)} .products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} .product-card{background:var(--white);border:1px solid var(--line);border-radius:24px;overflow:hidden;transition:.25s ease;box-shadow:0 12px 28px rgba(23,25,18,.06)} .product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)} .quick-view{border:0;background:var(--linen);padding:0;width:100%;overflow:hidden} .quick-view img{width:100%;aspect-ratio:1/1.08;object-fit:cover;transition:transform .5s ease} .product-card:hover img{transform:scale(1.05)} .product-info{padding:17px} .pill{display:inline-flex;border:1px solid rgba(164,95,75,.24);color:var(--clay);border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;margin-bottom:12px} .product-info h3{font-size:17px;line-height:1.18;margin-bottom:8px} .product-info p{margin:0 0 13px;color:rgba(23,25,18,.58);font-size:13px} .product-row{display:flex;justify-content:space-between;gap:12px;align-items:center} .mini-btn{border:0;background:var(--forest);color:var(--cream);border-radius:999px;padding:9px 13px;font-weight:900} .empty{display:none;padding:42px;border:1px dashed var(--line);border-radius:22px;text-align:center;background:rgba(255,253,248,.65)}
+.editorial{display:grid;grid-template-columns:.92fr 1.08fr;gap:38px;align-items:center} .editorial img{border-radius:34px;box-shadow:var(--shadow);width:100%;aspect-ratio:4/5;object-fit:cover} .rituals{display:grid;gap:14px;margin-top:26px} .ritual{display:flex;gap:15px;padding:18px;border:1px solid rgba(251,245,232,.16);border-radius:18px;background:rgba(255,255,255,.05)} .ritual b{color:var(--gold)} .ritual p{margin:3px 0 0;color:rgba(251,245,232,.68)}
+.quiz{display:grid;grid-template-columns:1fr 1fr;gap:24px} .panel{background:var(--white);border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 14px 36px rgba(23,25,18,.07)} .panel p{color:rgba(23,25,18,.62)} .quiz-options{display:grid;gap:10px;margin-top:20px} .quiz-options button{text-align:left;border:1px solid var(--line);border-radius:18px;background:var(--cream);padding:16px;font-weight:900} .quiz-result{background:var(--forest);color:var(--cream);border-radius:24px;padding:24px;min-height:210px} .quiz-result p{color:rgba(251,245,232,.72)}
+.faq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} details{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:18px} summary{font-weight:900;cursor:pointer} details p{color:rgba(23,25,18,.62)} .reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} .review{background:rgba(255,255,255,.06);border:1px solid rgba(251,245,232,.14);border-radius:22px;padding:24px} .stars{color:var(--gold)} .review p{color:rgba(251,245,232,.74)}
+.drawer,.modal{position:fixed;inset:0;z-index:80;display:none} .drawer.open,.modal.open{display:block} .scrim{position:absolute;inset:0;background:rgba(18,21,15,.58);backdrop-filter:blur(4px)} .drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(460px,100%);background:var(--cream);padding:22px;overflow:auto;box-shadow:var(--shadow)} .drawer-head,.modal-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px} .close{border:1px solid var(--line);background:var(--white);border-radius:999px;width:42px;height:42px;font-weight:900} .cart-line{display:grid;grid-template-columns:72px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)} .cart-line img{width:72px;height:72px;object-fit:cover;border-radius:14px} .qty{display:flex;align-items:center;gap:8px;margin-top:7px} .qty button{width:27px;height:27px;border-radius:999px;border:1px solid var(--line);background:var(--white)} .total{display:flex;justify-content:space-between;font-size:20px;font-weight:900;margin:20px 0} .checkout{display:grid;gap:10px;margin-top:18px} .checkout small{color:rgba(23,25,18,.58)} .success{display:none;background:var(--sage);border-radius:16px;padding:14px;font-weight:800}
+.modal-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(980px,calc(100% - 28px));max-height:90vh;overflow:auto;background:var(--cream);border-radius:30px;box-shadow:var(--shadow)} .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:0 24px 24px} .modal-body img{width:100%;aspect-ratio:1/1.1;object-fit:cover;border-radius:24px;background:var(--linen)} .detail-copy h2{font-size:46px;margin:8px 0 14px} .detail-copy p{color:rgba(23,25,18,.64)} .detail-list{display:grid;gap:10px;margin:18px 0} .detail-list div{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:13px;font-weight:800} .footer{background:#12150f;color:var(--cream);padding:54px 22px} .footer-grid{max-width:1220px;margin:auto;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:30px} .footer p,.footer a{color:rgba(251,245,232,.66)} .footer h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase} .footer ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:980px){.links{display:none} .hero-inner,.shop-shell,.editorial,.quiz{grid-template-columns:1fr} .hero-inner{min-height:auto} .filters{position:relative;top:auto} .collections,.feature-grid,.products{grid-template-columns:repeat(2,1fr)} .strip-inner,.faq-grid,.reviews,.footer-grid{grid-template-columns:1fr 1fr} .modal-body{grid-template-columns:1fr}}
+@media(max-width:580px){.collections,.feature-grid,.products,.strip-inner,.faq-grid,.reviews,.footer-grid{grid-template-columns:1fr} .section{padding:62px 18px} .nav-inner{padding:14px 18px} .brand{font-size:27px} .hero-card{transform:none} .note{left:12px;bottom:12px} h1{font-size:52px} .section-head,.shop-top{display:block} .round-btn:nth-child(1){display:none} .drawer-panel{width:100%} .detail-copy h2{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="announce">AuraLyn Collective • Mystical apparel, soulful gifts, and custom keepsakes</div>
+<nav class="nav"><div class="nav-inner"><a class="brand" href="#top">Aura<b>Lyn</b></a><div class="links"><a href="#collections">Collections</a><a href="#featured">Featured</a><a href="#shop">Shop All</a><a href="#ritual">Ritual Edit</a><a href="#custom">Custom</a></div><div class="nav-tools"><button class="round-btn" data-focus-search aria-label="Search">⌕</button><a class="round-btn" href="#custom" aria-label="Wishlist">♡</a><button class="round-btn" id="cartOpen" aria-label="Open cart">☾<span class="cart-count" id="cartCount">0</span></button></div></div></nav>
+<header class="hero" id="top"><div class="hero-inner"><div><div class="eyebrow">✦ Learning your true authentic self</div><h1>Wear your energy. Carry your story.</h1><p>A polished boutique redesign for AuraLyn Collective with a fuller shopping experience: curated sections, searchable products, quick product details, cart, and checkout flow.</p><div class="cta-row"><a class="btn primary" href="#shop">Shop the collection</a><a class="btn secondary" href="#quiz">Find your vibe</a></div></div><div class="hero-media"><div class="hero-card"><img src="https://auralyncollective.com/cdn/shop/files/image_ddb3a115-1c34-4afa-b1e0-900f5c1b5b77.png?height=1200&v=1773961243" alt="Mystical black graphic tee styled with crystals and tarot cards"></div><div class="note"><small>Brand mantra</small>It’s a whole energy shift.</div></div></div></header>
+<section class="strip"><div class="strip-inner"><div>Secure boutique checkout mockup</div><div>48 catalog items included</div><div>Search + category filters</div><div>Custom order pathway</div></div></section>
+<main>
+<section class="section" id="collections"><div class="wrap"><div class="section-head"><div><div class="kicker">Curated collections</div><h2>Shop by vibe</h2></div><p class="lead">Clear shopping paths make the store feel premium, easier to browse, and closer to the spiritual lifestyle niche.</p></div><div class="collections"><a class="collection" href="#shop" data-filter-link="Apparel"><img src="https://auralyncollective.com/cdn/shop/files/17971867186099455854_2048.jpg?v=1776547794&width=1200" alt="AuraLyn graphic apparel"><div><h3>Graphic Apparel</h3><p>Affirmations, zodiac designs, and soft statement pieces.</p></div></a><a class="collection" href="#shop" data-filter-link="Totes"><img src="https://auralyncollective.com/cdn/shop/files/843385438433972692_2048.jpg?v=1772852290&width=1200" alt="AuraLyn canvas tote"><div><h3>Totes</h3><p>Carry ritual tools, errands, and everyday magic.</p></div></a><a class="collection" href="#shop" data-filter-link="Jewelry"><img src="https://auralyncollective.com/cdn/shop/files/c4ccabd36c4e42b8a945ee6b1e95fcaf-Max.jpg?v=1775533329&width=1200" alt="AuraLyn crystal jewelry"><div><h3>Jewelry</h3><p>Beads, stones, and grounded spiritual accents.</p></div></a><a class="collection" href="#shop" data-filter-link="Home Gifts"><img src="https://auralyncollective.com/cdn/shop/files/9304910707403643924_2048.jpg?v=1776318031&width=1200" alt="AuraLyn home gift throw"><div><h3>Home & Gifts</h3><p>Throws, mugs, tumblers, and heartfelt seasonal gifts.</p></div></a></div></div></section>
+<section class="section alt" id="featured"><div class="wrap"><div class="section-head"><div><div class="kicker">Featured drop</div><h2>Bestseller energy</h2></div><a class="btn primary" href="#shop">View all</a></div><div class="feature-grid"><article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/17971867186099455854_2048.jpg?v=1776547794&amp;width=1200" alt="&quot;Aim True, Shine Bright&quot; Pullover- Sagittarius"><div><span>Apparel</span><h3>&quot;Aim True, Shine Bright&quot; Pullover- Sagittarius</h3><p>$45.00 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9688386728817856286_2048.jpg?v=1776315172&amp;width=1200" alt="&quot;Blessed Grandma&quot; Floral Teal Throw"><div><span>Home Gifts</span><h3>&quot;Blessed Grandma&quot; Floral Teal Throw</h3><p>$25.00 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/2756960403786375265_2048.jpg?v=1772811721&amp;width=1200" alt="&quot;Don&#x27;t Be Ashamed of Your Story&quot; Women&#x27;s Tank"><div><span>Apparel</span><h3>&quot;Don&#x27;t Be Ashamed of Your Story&quot; Women&#x27;s Tank</h3><p>$21.00 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/843385438433972692_2048.jpg?v=1772852290&amp;width=1200" alt="&quot;It&#x27;s Not the Destination, It&#x27;s the Journey&quot; Cotton Canvas Tote"><div><span>Totes</span><h3>&quot;It&#x27;s Not the Destination, It&#x27;s the Journey&quot; Cotton Canvas Tote</h3><p>$13.99 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/4787990904823795608_2048.jpg?v=1776274396&amp;width=1200" alt="&quot;Mama&quot; Chill Wine Tumbler-"><div><span>Home Gifts</span><h3>&quot;Mama&quot; Chill Wine Tumbler-</h3><p>$22.65 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9304910707403643924_2048.jpg?v=1776318031&amp;width=1200" alt="&quot;Your Love Is The Thread That Ties Our Family Together&quot; - Mothers Day Throw"><div><span>Home Gifts</span><h3>&quot;Your Love Is The Thread That Ties Our Family Together&quot; - Mothers Day Throw</h3><p>$25.00 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/13928960809885515359_2048.jpg?v=1776282778&amp;width=1200" alt="&#x27;Grandma&#x27; Mothers Day Tee"><div><span>Apparel</span><h3>&#x27;Grandma&#x27; Mothers Day Tee</h3><p>$25.00 USD</p></div></article>
+<article class="feature-product"><img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/c4ccabd36c4e42b8a945ee6b1e95fcaf-Max.jpg?v=1775533329&amp;width=1200" alt="Agate Beaded Bracelet"><div><span>Jewelry</span><h3>Agate Beaded Bracelet</h3><p>$26.00 USD</p></div></article></div></div></section>
+<section class="section" id="shop"><div class="wrap"><div class="section-head"><div><div class="kicker">Full storefront</div><h2>Search, filter, and shop</h2></div><p class="lead">Use the controls to browse by product type, occasion, price, and keyword. Select a product image for a detail page view.</p></div><div class="shop-shell"><aside class="filters"><h3>Filters</h3><div class="field"><label for="searchInput">Search</label><input id="searchInput" placeholder="Search tees, mugs, zodiac..."></div><div class="field"><label>Category</label><div class="chip-set" id="categoryChips"><button class="chip active" data-category="All">All</button><button class="chip" data-category="Apparel">Apparel</button><button class="chip" data-category="Totes">Totes</button><button class="chip" data-category="Jewelry">Jewelry</button><button class="chip" data-category="Home Gifts">Home Gifts</button><button class="chip" data-category="Accessories">Accessories</button></div></div><div class="field"><label for="occasionSelect">Occasion</label><select id="occasionSelect"><option value="All">All occasions</option><option>Zodiac Edit</option><option>Mother's Day</option><option>Everyday Ritual</option></select></div><div class="field"><label for="priceSelect">Price</label><select id="priceSelect"><option value="All">Any price</option><option value="0-15">Under $15</option><option value="15-25">$15–$25</option><option value="25-999">$25+</option></select></div><button class="btn primary" id="clearFilters" type="button">Clear filters</button></aside><section><div class="shop-top"><div class="result-note" id="resultNote">Showing all products</div><select id="sortSelect" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="az">Alphabetical</option></select></div><div class="empty" id="emptyState"><h3>No matching products</h3><p>Try clearing filters or searching a broader term.</p></div><div class="products" id="productGrid"><article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="aim-true-shine-bright-pullover-sagittarius" aria-label="View &quot;Aim True, Shine Bright&quot; Pullover- Sagittarius">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/17971867186099455854_2048.jpg?v=1776547794&amp;width=1200" alt="&quot;Aim True, Shine Bright&quot; Pullover- Sagittarius">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>&quot;Aim True, Shine Bright&quot; Pullover- Sagittarius</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$45.00 USD</strong><button class="mini-btn add-cart" data-id="aim-true-shine-bright-pullover-sagittarius">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Home Gifts">
+  <button class="quick-view" data-id="blessed-grandma-floral-teal-throw" aria-label="View &quot;Blessed Grandma&quot; Floral Teal Throw">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9688386728817856286_2048.jpg?v=1776315172&amp;width=1200" alt="&quot;Blessed Grandma&quot; Floral Teal Throw">
+  </button>
+  <div class="product-info">
+    <span class="pill">Home Gifts</span>
+    <h3>&quot;Blessed Grandma&quot; Floral Teal Throw</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="blessed-grandma-floral-teal-throw">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="don-t-be-ashamed-of-your-story-women-s-tank" aria-label="View &quot;Don&#x27;t Be Ashamed of Your Story&quot; Women&#x27;s Tank">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/2756960403786375265_2048.jpg?v=1772811721&amp;width=1200" alt="&quot;Don&#x27;t Be Ashamed of Your Story&quot; Women&#x27;s Tank">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>&quot;Don&#x27;t Be Ashamed of Your Story&quot; Women&#x27;s Tank</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$21.00 USD</strong><button class="mini-btn add-cart" data-id="don-t-be-ashamed-of-your-story-women-s-tank">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="it-s-not-the-destination-it-s-the-journey-cotton-canvas-tote" aria-label="View &quot;It&#x27;s Not the Destination, It&#x27;s the Journey&quot; Cotton Canvas Tote">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/843385438433972692_2048.jpg?v=1772852290&amp;width=1200" alt="&quot;It&#x27;s Not the Destination, It&#x27;s the Journey&quot; Cotton Canvas Tote">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>&quot;It&#x27;s Not the Destination, It&#x27;s the Journey&quot; Cotton Canvas Tote</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$13.99 USD</strong><button class="mini-btn add-cart" data-id="it-s-not-the-destination-it-s-the-journey-cotton-canvas-tote">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Home Gifts">
+  <button class="quick-view" data-id="mama-chill-wine-tumbler" aria-label="View &quot;Mama&quot; Chill Wine Tumbler-">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/4787990904823795608_2048.jpg?v=1776274396&amp;width=1200" alt="&quot;Mama&quot; Chill Wine Tumbler-">
+  </button>
+  <div class="product-info">
+    <span class="pill">Home Gifts</span>
+    <h3>&quot;Mama&quot; Chill Wine Tumbler-</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$22.65 USD</strong><button class="mini-btn add-cart" data-id="mama-chill-wine-tumbler">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Home Gifts">
+  <button class="quick-view" data-id="your-love-is-the-thread-that-ties-our-family-together-mothers-day-thro" aria-label="View &quot;Your Love Is The Thread That Ties Our Family Together&quot; - Mothers Day Throw">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9304910707403643924_2048.jpg?v=1776318031&amp;width=1200" alt="&quot;Your Love Is The Thread That Ties Our Family Together&quot; - Mothers Day Throw">
+  </button>
+  <div class="product-info">
+    <span class="pill">Home Gifts</span>
+    <h3>&quot;Your Love Is The Thread That Ties Our Family Together&quot; - Mothers Day Throw</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="your-love-is-the-thread-that-ties-our-family-together-mothers-day-thro">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="grandma-mothers-day-tee" aria-label="View &#x27;Grandma&#x27; Mothers Day Tee">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/13928960809885515359_2048.jpg?v=1776282778&amp;width=1200" alt="&#x27;Grandma&#x27; Mothers Day Tee">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>&#x27;Grandma&#x27; Mothers Day Tee</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="grandma-mothers-day-tee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="agate-beaded-bracelet" aria-label="View Agate Beaded Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/c4ccabd36c4e42b8a945ee6b1e95fcaf-Max.jpg?v=1775533329&amp;width=1200" alt="Agate Beaded Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Agate Beaded Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$26.00 USD</strong><button class="mini-btn add-cart" data-id="agate-beaded-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="angel-art-t-shirt-rise-in-grace-spiritual-graphic-tee" aria-label="View Angel Art T-Shirt — &quot;Rise in Grace&quot; Spiritual Graphic Tee">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/15667653973328879140_2048.jpg?v=1775673921&amp;width=1200" alt="Angel Art T-Shirt — &quot;Rise in Grace&quot; Spiritual Graphic Tee">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Angel Art T-Shirt — &quot;Rise in Grace&quot; Spiritual Graphic Tee</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="angel-art-t-shirt-rise-in-grace-spiritual-graphic-tee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="baller-shot-caller-baseball-t-shirt" aria-label="View Baller Shot Caller Baseball T-Shirt">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/1436774138173037660_2048.jpg?v=1775618350&amp;width=1200" alt="Baller Shot Caller Baseball T-Shirt">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Baller Shot Caller Baseball T-Shirt</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="baller-shot-caller-baseball-t-shirt">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="blessed-mothers-day-shirt-mimi" aria-label="View Blessed Mothers Day Shirt- &quot;Mimi&quot;">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9441649352819818537_2048.jpg?v=1776289208&amp;width=1200" alt="Blessed Mothers Day Shirt- &quot;Mimi&quot;">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Blessed Mothers Day Shirt- &quot;Mimi&quot;</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="blessed-mothers-day-shirt-mimi">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="blessed-nana-mothers-day-tee" aria-label="View Blessed Nana- Mothers Day Tee">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/14507861429052947353_2048.jpg?v=1776288788&amp;width=1200" alt="Blessed Nana- Mothers Day Tee">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Blessed Nana- Mothers Day Tee</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="blessed-nana-mothers-day-tee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="canvas-tote-bag-balance-guides-me-libra" aria-label="View Canvas Tote Bag — &quot;Balance Guides Me&quot; -Libra">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/167860694664151535_2048.jpg?v=1775798592&amp;width=1200" alt="Canvas Tote Bag — &quot;Balance Guides Me&quot; -Libra">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Canvas Tote Bag — &quot;Balance Guides Me&quot; -Libra</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="canvas-tote-bag-balance-guides-me-libra">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="canvas-tote-bag-i-embrace-transformation-scorpio" aria-label="View Canvas Tote Bag — &quot;I Embrace Transformation&quot; -Scorpio">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/16004918458752498478_2048.jpg?v=1775798423&amp;width=1200" alt="Canvas Tote Bag — &quot;I Embrace Transformation&quot; -Scorpio">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Canvas Tote Bag — &quot;I Embrace Transformation&quot; -Scorpio</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="canvas-tote-bag-i-embrace-transformation-scorpio">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="canvas-tote-bag-aim-true-shine-bright-sagittarius" aria-label="View Canvas Tote Bag — &#x27;Aim True, Shine Bright&#x27; -Sagittarius">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/6195388859108548970_2048.jpg?v=1775798259&amp;width=1200" alt="Canvas Tote Bag — &#x27;Aim True, Shine Bright&#x27; -Sagittarius">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Canvas Tote Bag — &#x27;Aim True, Shine Bright&#x27; -Sagittarius</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="canvas-tote-bag-aim-true-shine-bright-sagittarius">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="canvas-tote-bag-grounded-worthy-steady-abundant-taurus" aria-label="View Canvas Tote Bag — &#x27;Grounded • Worthy • Steady • Abundant&#x27;- Taurus">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/1567592161273503671_2048.jpg?v=1775799283&amp;width=1200" alt="Canvas Tote Bag — &#x27;Grounded • Worthy • Steady • Abundant&#x27;- Taurus">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Canvas Tote Bag — &#x27;Grounded • Worthy • Steady • Abundant&#x27;- Taurus</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="canvas-tote-bag-grounded-worthy-steady-abundant-taurus">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="canvas-tote-bag-you-are-seen-you-are-heard-you-are-loved-cancer" aria-label="View Canvas Tote Bag — &#x27;You Are Seen, You Are Heard, You Are Loved&#x27; -Cancer">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/8645290618265249452_2048.jpg?v=1775799020&amp;width=1200" alt="Canvas Tote Bag — &#x27;You Are Seen, You Are Heard, You Are Loved&#x27; -Cancer">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Canvas Tote Bag — &#x27;You Are Seen, You Are Heard, You Are Loved&#x27; -Cancer</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="canvas-tote-bag-you-are-seen-you-are-heard-you-are-loved-cancer">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Home Gifts">
+  <button class="quick-view" data-id="coffee-mug-everything-i-am-i-owe-to-you" aria-label="View Coffee Mug – &quot;Everything I Am, I Owe to You&quot;">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/15521990261719048481_2048.jpg?v=1776320301&amp;width=1200" alt="Coffee Mug – &quot;Everything I Am, I Owe to You&quot;">
+  </button>
+  <div class="product-info">
+    <span class="pill">Home Gifts</span>
+    <h3>Coffee Mug – &quot;Everything I Am, I Owe to You&quot;</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$12.99 USD</strong><button class="mini-btn add-cart" data-id="coffee-mug-everything-i-am-i-owe-to-you">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Home Gifts">
+  <button class="quick-view" data-id="coffee-mug-soul-brewed-spiritual-coffee-cup-but-first-coffee" aria-label="View Coffee Mug — &quot;Soul Brewed&quot; Spiritual Coffee Cup (But First, Coffee!)">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/13392265725965085885_2048.jpg?v=1772593287&amp;width=1200" alt="Coffee Mug — &quot;Soul Brewed&quot; Spiritual Coffee Cup (But First, Coffee!)">
+  </button>
+  <div class="product-info">
+    <span class="pill">Home Gifts</span>
+    <h3>Coffee Mug — &quot;Soul Brewed&quot; Spiritual Coffee Cup (But First, Coffee!)</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$15.99 USD</strong><button class="mini-btn add-cart" data-id="coffee-mug-soul-brewed-spiritual-coffee-cup-but-first-coffee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="copper-natural-stone-teardrop-shape-earrings" aria-label="View Copper Natural Stone Teardrop Shape Earrings">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/28680cd3-90a5-4f86-8d6e-138bbc3f5f26-Max.webp?v=1775534103&amp;width=1200" alt="Copper Natural Stone Teardrop Shape Earrings">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Copper Natural Stone Teardrop Shape Earrings</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$13.00 USD</strong><button class="mini-btn add-cart" data-id="copper-natural-stone-teardrop-shape-earrings">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="cotton-tote-bag-listen-with-my-heart-aquarius" aria-label="View Cotton Tote Bag — &quot;Listen with My Heart&quot; -Aquarius">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/14791165909615034743_2048.jpg?v=1775799530&amp;width=1200" alt="Cotton Tote Bag — &quot;Listen with My Heart&quot; -Aquarius">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Cotton Tote Bag — &quot;Listen with My Heart&quot; -Aquarius</h3>
+    <p>Zodiac Edit</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="cotton-tote-bag-listen-with-my-heart-aquarius">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="crewneck-sweatshirt-surround-yourself-with-positive-vibes" aria-label="View Crewneck Sweatshirt — &quot;Surround Yourself with Positive Vibes&quot;">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9788161619211742473_2048.jpg?v=1772783025&amp;width=1200" alt="Crewneck Sweatshirt — &quot;Surround Yourself with Positive Vibes&quot;">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Crewneck Sweatshirt — &quot;Surround Yourself with Positive Vibes&quot;</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$42.00 USD</strong><button class="mini-btn add-cart" data-id="crewneck-sweatshirt-surround-yourself-with-positive-vibes">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="crystal-bead-bracelet" aria-label="View Crystal Bead Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/521aaa25b6e14a0bb9438b798e28d293-Max.jpg?v=1775533017&amp;width=1200" alt="Crystal Bead Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Crystal Bead Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$27.00 USD</strong><button class="mini-btn add-cart" data-id="crystal-bead-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Accessories">
+  <button class="quick-view" data-id="embroidered-cuffed-auralyn-beanie" aria-label="View Embroidered Cuffed AuraLyn Beanie">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/6810066165087113445_2048.jpg?v=1772851573&amp;width=1200" alt="Embroidered Cuffed AuraLyn Beanie">
+  </button>
+  <div class="product-info">
+    <span class="pill">Accessories</span>
+    <h3>Embroidered Cuffed AuraLyn Beanie</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$17.00 USD</strong><button class="mini-btn add-cart" data-id="embroidered-cuffed-auralyn-beanie">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="geometrical-shape-natural-stone-dangle-earrings" aria-label="View Geometrical Shape Natural Stone Dangle Earrings">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/0dc4c12991c1441d91c6c7257a66809d-Max.jpg?v=1775534116&amp;width=1200" alt="Geometrical Shape Natural Stone Dangle Earrings">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Geometrical Shape Natural Stone Dangle Earrings</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$13.00 USD</strong><button class="mini-btn add-cart" data-id="geometrical-shape-natural-stone-dangle-earrings">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="geometrical-shape-triple-layer-bracelet" aria-label="View Geometrical Shape Triple-Layer Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/23afcab6d0e94e65a66bb31809f483b1-Max.jpg?v=1775534005&amp;width=1200" alt="Geometrical Shape Triple-Layer Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Geometrical Shape Triple-Layer Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$26.00 USD</strong><button class="mini-btn add-cart" data-id="geometrical-shape-triple-layer-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="grandma-s-kitchen-apron" aria-label="View Grandma&#x27;s Kitchen Apron —">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/14330496742126949575_2048.jpg?v=1776318947&amp;width=1200" alt="Grandma&#x27;s Kitchen Apron —">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Grandma&#x27;s Kitchen Apron —</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$35.00 USD</strong><button class="mini-btn add-cart" data-id="grandma-s-kitchen-apron">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="grandma-s-kitchen-cotton-tea-towel" aria-label="View Grandma&#x27;s Kitchen Cotton Tea Towel —">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/17757513473840294544_2048.jpg?v=1776318599&amp;width=1200" alt="Grandma&#x27;s Kitchen Cotton Tea Towel —">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Grandma&#x27;s Kitchen Cotton Tea Towel —</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$14.99 USD</strong><button class="mini-btn add-cart" data-id="grandma-s-kitchen-cotton-tea-towel">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="handmade-heart-shape-natural-stone-bracelet" aria-label="View Handmade Heart Shape Natural Stone Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/6445d60700f74d9e8f0840ca5ae9c5ea-Max.jpg?v=1775534290&amp;width=1200" alt="Handmade Heart Shape Natural Stone Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Handmade Heart Shape Natural Stone Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$14.00 USD</strong><button class="mini-btn add-cart" data-id="handmade-heart-shape-natural-stone-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="handmade-natural-stone-teardrop-earrings" aria-label="View Handmade Natural Stone Teardrop Earrings">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/0518722071ff4714ab9d5576af2205a1-Max.jpg?v=1775534405&amp;width=1200" alt="Handmade Natural Stone Teardrop Earrings">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Handmade Natural Stone Teardrop Earrings</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$14.00 USD</strong><button class="mini-btn add-cart" data-id="handmade-natural-stone-teardrop-earrings">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="handmade-triple-layer-beaded-bracelet" aria-label="View Handmade Triple Layer Beaded Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/8d1ae98a8e734e5ea6bd3792b59b4ccf-Max.jpg?v=1775533981&amp;width=1200" alt="Handmade Triple Layer Beaded Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Handmade Triple Layer Beaded Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="handmade-triple-layer-beaded-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="heart-charm-beaded-bracelet" aria-label="View Heart Charm Beaded Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/c7bdaa67-436c-43ab-ba9a-1b5f8d2f5d0f-Max-Origin.webp?v=1775533823&amp;width=1200" alt="Heart Charm Beaded Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Heart Charm Beaded Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$15.10 USD</strong><button class="mini-btn add-cart" data-id="heart-charm-beaded-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="heart-layered-bracelet" aria-label="View Heart Layered Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/b34fea95cc7e465b850ecd9a196ec00b-Max.jpg?v=1775533221&amp;width=1200" alt="Heart Layered Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Heart Layered Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$27.00 USD</strong><button class="mini-btn add-cart" data-id="heart-layered-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="heart-shape-beaded-bracelet" aria-label="View Heart Shape Beaded Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/7524c76aeb4b42d1bdcb75890009a5f9-Max.jpg?v=1775533537&amp;width=1200" alt="Heart Shape Beaded Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Heart Shape Beaded Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$14.00 USD</strong><button class="mini-btn add-cart" data-id="heart-shape-beaded-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="hei-hei-spirit-animal-t-shirt" aria-label="View Hei Hei Spirit Animal T-Shirt">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/14184923967324921386_2048.jpg?v=1773979127&amp;width=1200" alt="Hei Hei Spirit Animal T-Shirt">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Hei Hei Spirit Animal T-Shirt</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="hei-hei-spirit-animal-t-shirt">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="i-match-energy-women-s-boxy-tee" aria-label="View I Match Energy Women&#x27;s Boxy Tee">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/17890817081714211274_2048.jpg?v=1773152564&amp;width=1200" alt="I Match Energy Women&#x27;s Boxy Tee">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>I Match Energy Women&#x27;s Boxy Tee</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$22.00 USD</strong><button class="mini-btn add-cart" data-id="i-match-energy-women-s-boxy-tee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Jewelry">
+  <button class="quick-view" data-id="imperial-jasper-beaded-bracelet" aria-label="View Imperial Jasper Beaded Bracelet">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/b2bec47208da4a078b59b56e87cfabd8-Max.jpg?v=1775533618&amp;width=1200" alt="Imperial Jasper Beaded Bracelet">
+  </button>
+  <div class="product-info">
+    <span class="pill">Jewelry</span>
+    <h3>Imperial Jasper Beaded Bracelet</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$18.00 USD</strong><button class="mini-btn add-cart" data-id="imperial-jasper-beaded-bracelet">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="jesus-loves-you-floral-cross-tank" aria-label="View Jesus Loves You Floral Cross Tank">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/6754239355606132912_2048.jpg?v=1777303887&amp;width=1200" alt="Jesus Loves You Floral Cross Tank">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Jesus Loves You Floral Cross Tank</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="jesus-loves-you-floral-cross-tank">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="jesus-loves-you-floral-cross-women-s-tee" aria-label="View Jesus Loves You Floral Cross Women&#x27;s Tee -">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/13060079101780197339_2048.jpg?v=1777302589&amp;width=1200" alt="Jesus Loves You Floral Cross Women&#x27;s Tee -">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Jesus Loves You Floral Cross Women&#x27;s Tee -</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="jesus-loves-you-floral-cross-women-s-tee">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="jesus-loves-you-floral-racerback-tank" aria-label="View Jesus Loves You Floral Racerback Tank —">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/9109872191688021572_2048.jpg?v=1777303262&amp;width=1200" alt="Jesus Loves You Floral Racerback Tank —">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Jesus Loves You Floral Racerback Tank —</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="jesus-loves-you-floral-racerback-tank">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="meditation-soy-candle-9oz-scented-jar-for-mindfulness-relaxation" aria-label="View Meditation Soy Candle — 9oz Scented Jar for Mindfulness &amp; Relaxation">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/3861398394226276425_2048.jpg?v=1772572560&amp;width=1200" alt="Meditation Soy Candle — 9oz Scented Jar for Mindfulness &amp; Relaxation">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Meditation Soy Candle — 9oz Scented Jar for Mindfulness &amp; Relaxation</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$18.00 USD</strong><button class="mini-btn add-cart" data-id="meditation-soy-candle-9oz-scented-jar-for-mindfulness-relaxation">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="meditation-soy-candle-amber-jar-scented-candle-for-relaxation-mindfuln" aria-label="View Meditation Soy Candle — Amber Jar Scented Candle for Relaxation &amp; Mindfulness">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/2168343485879451609_2048.jpg?v=1772580493&amp;width=1200" alt="Meditation Soy Candle — Amber Jar Scented Candle for Relaxation &amp; Mindfulness">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Meditation Soy Candle — Amber Jar Scented Candle for Relaxation &amp; Mindfulness</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$15.55 USD</strong><button class="mini-btn add-cart" data-id="meditation-soy-candle-amber-jar-scented-candle-for-relaxation-mindfuln">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="mom-floral-pocket-t-shirt" aria-label="View Mom Floral Pocket T-Shirt">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/652421641566644055_2048.jpg?v=1776225256&amp;width=1200" alt="Mom Floral Pocket T-Shirt">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Mom Floral Pocket T-Shirt</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="mom-floral-pocket-t-shirt">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Totes">
+  <button class="quick-view" data-id="mom-heart-canvas-tote-bag" aria-label="View Mom Heart Canvas Tote Bag">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/13455197437710670701_2048.jpg?v=1776181205&amp;width=1200" alt="Mom Heart Canvas Tote Bag">
+  </button>
+  <div class="product-info">
+    <span class="pill">Totes</span>
+    <h3>Mom Heart Canvas Tote Bag</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$16.00 USD</strong><button class="mini-btn add-cart" data-id="mom-heart-canvas-tote-bag">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="mom-heart-floral-graphic-t-shirt" aria-label="View Mom Heart Floral Graphic T-Shirt">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/175311492991238270_2048.jpg?v=1776180726&amp;width=1200" alt="Mom Heart Floral Graphic T-Shirt">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Mom Heart Floral Graphic T-Shirt</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="mom-heart-floral-graphic-t-shirt">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="mom-heart-graphic-t-shirt" aria-label="View Mom Heart Graphic T-Shirt">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/14220610363088206625_2048.jpg?v=1776181473&amp;width=1200" alt="Mom Heart Graphic T-Shirt">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Mom Heart Graphic T-Shirt</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$25.00 USD</strong><button class="mini-btn add-cart" data-id="mom-heart-graphic-t-shirt">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="mom-scented-candle-coconut-apricot-wax-4oz-9oz" aria-label="View Mom Scented Candle – Coconut Apricot Wax (4oz &amp; 9oz)">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/1288804283151582300_2048.jpg?v=1776315473&amp;width=1200" alt="Mom Scented Candle – Coconut Apricot Wax (4oz &amp; 9oz)">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Mom Scented Candle – Coconut Apricot Wax (4oz &amp; 9oz)</h3>
+    <p>Everyday Ritual</p>
+    <div class="product-row"><strong>$17.58 USD</strong><button class="mini-btn add-cart" data-id="mom-scented-candle-coconut-apricot-wax-4oz-9oz">Add</button></div>
+  </div>
+</article>
+<article class="product-card" data-category="Apparel">
+  <button class="quick-view" data-id="motherhood-tee-vintage-gothic-script-with-butterflies" aria-label="View Motherhood Tee — Vintage Gothic Script with Butterflies">
+    <img loading="lazy" src="https://auralyncollective.com/cdn/shop/files/398895876302893553_2048.jpg?v=1776288997&amp;width=1200" alt="Motherhood Tee — Vintage Gothic Script with Butterflies">
+  </button>
+  <div class="product-info">
+    <span class="pill">Apparel</span>
+    <h3>Motherhood Tee — Vintage Gothic Script with Butterflies</h3>
+    <p>Mother&#x27;s Day</p>
+    <div class="product-row"><strong>$20.00 USD</strong><button class="mini-btn add-cart" data-id="motherhood-tee-vintage-gothic-script-with-butterflies">Add</button></div>
+  </div>
+</article></div></section></div></div></section>
+<section class="section dark" id="ritual"><div class="wrap editorial"><img src="https://auralyncollective.com/cdn/shop/files/regenerate_42a64eb2-a588-4e36-872d-87d7a2fc1e11.png?height=1100&v=1775942844" alt="Spiritual journey essentials"><div><div class="kicker">Spiritual journey essentials</div><h2>Style your rituals beautifully.</h2><p class="lead">A stronger lifestyle section positions jewelry, journals, apparel, totes, and gifts as one cohesive spiritual-fashion brand.</p><div class="rituals"><div class="ritual"><b>01</b><div><strong>Morning intention</strong><p>Pair a soft tee with a stone bracelet and coffee mug.</p></div></div><div class="ritual"><b>02</b><div><strong>On-the-go grounding</strong><p>Carry journals, crystals, and essentials in a zodiac tote.</p></div></div><div class="ritual"><b>03</b><div><strong>Gift from the heart</strong><p>Build personalized bundles for mothers, grandmothers, and friends.</p></div></div></div></div></div></section>
+<section class="section alt" id="quiz"><div class="wrap quiz"><div class="panel"><div class="kicker">Style finder</div><h2>Find your AuraLyn vibe</h2><p>A lightweight shopping feature that can guide customers toward the right product family.</p><div class="quiz-options"><button data-quiz="Zodiac Edit">I love astrology and signs</button><button data-quiz="Mother's Day">I’m shopping for a meaningful gift</button><button data-quiz="Everyday Ritual">I want spiritual everyday essentials</button></div></div><div class="quiz-result" id="quizResult"><div class="kicker">Your match</div><h2>Choose a vibe</h2><p>Your recommendation will appear here and filter the catalog.</p></div></div></section>
+<section class="section" id="custom"><div class="wrap"><div class="section-head"><div><div class="kicker">Made for you</div><h2>Custom order studio</h2></div><p class="lead">A premium request section for personalized apparel, family gifts, spiritual bundles, event pieces, and keepsakes.</p></div><form class="panel" id="customForm"><div class="quiz"><div><div class="field"><label for="name">Name</label><input id="name" required maxlength="80" placeholder="Your name"></div><div class="field"><label for="email">Email</label><input id="email" type="email" required maxlength="120" placeholder="you@email.com"></div><div class="field"><label for="type">Product type</label><select id="type"><option>Apparel</option><option>Jewelry</option><option>Home Goods</option><option>Bundle</option><option>Other</option></select></div></div><div><div class="field"><label for="details">Personalization details</label><textarea id="details" required maxlength="800" placeholder="Words, colors, sizes, symbols, deadline, and inspiration..."></textarea></div><button class="btn primary" type="submit">Submit custom request</button><p class="success" id="customSuccess">Request preview saved. On a live store, this would send to AuraLyn.</p></div></div></form></div></section>
+<section class="section alt"><div class="wrap"><div class="section-head"><div><div class="kicker">Questions</div><h2>Store confidence</h2></div></div><div class="faq-grid"><details open><summary>How does the cart work?</summary><p>This standalone HTML file includes a working front-end cart saved in the browser for previewing the shopping flow.</p></details><details><summary>Is checkout live?</summary><p>The checkout is a polished mockup. A real live checkout requires the store platform connection.</p></details><details><summary>Can product pages be separate?</summary><p>Yes. This file uses a product detail modal/hash view; it can be split into individual pages later.</p></details></div></div></section>
+<section class="section dark" id="reviews"><div class="wrap"><div class="section-head"><div><div class="kicker">Community energy</div><h2>Reviews that sell the feeling</h2></div></div><div class="reviews"><div class="review"><div class="stars">★★★★★</div><p>“The spiritual designs feel meaningful and easy to style.”</p><strong>— Intentional shopper</strong></div><div class="review"><div class="stars">★★★★★</div><p>“Perfect for personalized gifts that still feel boutique.”</p><strong>— Gift buyer</strong></div><div class="review"><div class="stars">★★★★★</div><p>“Everything feels connected: tees, crystals, journals, and cozy gifts.”</p><strong>— AuraLyn customer</strong></div></div></div></section>
+</main>
+<footer class="footer"><div class="footer-grid"><div><a class="brand" href="#top">Aura<b>Lyn</b></a><p>Learning your true authentic self — it’s a whole energy shift.</p></div><div><h3>Shop</h3><ul><li><a href="#shop">All Products</a></li><li><a href="#collections">Collections</a></li><li><a href="#quiz">Style Finder</a></li></ul></div><div><h3>Support</h3><ul><li><a href="#custom">Custom Orders</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#top">Back to top</a></li></ul></div><div><h3>Newsletter</h3><p>Seasonal drops, styling notes, and spiritual gift inspiration.</p></div></div></footer>
+<div class="modal" id="productModal" aria-hidden="true"><div class="scrim" data-close-modal></div><div class="modal-card"><div class="modal-head" style="padding:22px 24px 0"><strong>Product details</strong><button class="close" data-close-modal>×</button></div><div class="modal-body"><img id="modalImg" alt=""><div class="detail-copy"><span class="pill" id="modalCat"></span><h2 id="modalTitle"></h2><strong id="modalPrice"></strong><p id="modalDesc"></p><div class="detail-list"><div>Soft boutique presentation</div><div>Intentional gift-ready styling</div><div>Pairs with jewelry, totes, and ritual essentials</div></div><div class="cta-row"><button class="btn primary" id="modalAdd">Add to cart</button><a class="btn" style="border-color:var(--line);background:var(--white)" id="modalOriginal" target="_blank" rel="noopener">Original product link</a></div></div></div></div></div>
+<div class="drawer" id="cartDrawer" aria-hidden="true"><div class="scrim" data-close-cart></div><aside class="drawer-panel"><div class="drawer-head"><h2>Your cart</h2><button class="close" data-close-cart>×</button></div><div id="cartItems"></div><div class="total"><span>Total</span><span id="cartTotal">$0.00</span></div><div class="checkout"><h3>Checkout</h3><input id="checkoutName" maxlength="80" placeholder="Full name"><input id="checkoutEmail" type="email" maxlength="120" placeholder="Email address"><input id="checkoutAddress" maxlength="160" placeholder="Shipping address"><button class="btn primary" id="checkoutBtn">Place demo order</button><small>This is a front-end checkout mockup for the redesign file.</small><div class="success" id="checkoutSuccess">Demo order ready. Connect live checkout when publishing.</div></div></aside></div>
+<script>
+const PRODUCTS = [{"id": "aim-true-shine-bright-pullover-sagittarius", "title": "\"Aim True, Shine Bright\" Pullover- Sagittarius", "link": "https://auralyncollective.com/products/aim-true-shine-bright-pullover-sagittarius", "img": "https://auralyncollective.com/cdn/shop/files/17971867186099455854_2048.jpg?v=1776547794&width=1200", "price": "$45.00 USD", "priceNum": 45.0, "category": "Apparel", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "blessed-grandma-floral-teal-throw", "title": "\"Blessed Grandma\" Floral Teal Throw", "link": "https://auralyncollective.com/products/blessed-grandma-floral-teal-throw", "img": "https://auralyncollective.com/cdn/shop/files/9688386728817856286_2048.jpg?v=1776315172&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Home Gifts", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the home gifts collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "don-t-be-ashamed-of-your-story-women-s-tank", "title": "\"Don't Be Ashamed of Your Story\" Women's Tank", "link": "https://auralyncollective.com/products/dont-be-ashamed-of-your-story-womens-tank", "img": "https://auralyncollective.com/cdn/shop/files/2756960403786375265_2048.jpg?v=1772811721&width=1200", "price": "$21.00 USD", "priceNum": 21.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "it-s-not-the-destination-it-s-the-journey-cotton-canvas-tote", "title": "\"It's Not the Destination, It's the Journey\" Cotton Canvas Tote", "link": "https://auralyncollective.com/products/its-not-the-destination-its-the-journey-cotton-canvas-tote", "img": "https://auralyncollective.com/cdn/shop/files/843385438433972692_2048.jpg?v=1772852290&width=1200", "price": "$13.99 USD", "priceNum": 13.99, "category": "Totes", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mama-chill-wine-tumbler", "title": "\"Mama\" Chill Wine Tumbler-", "link": "https://auralyncollective.com/products/mama-chill-wine-tumbler", "img": "https://auralyncollective.com/cdn/shop/files/4787990904823795608_2048.jpg?v=1776274396&width=1200", "price": "$22.65 USD", "priceNum": 22.65, "category": "Home Gifts", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the home gifts collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "your-love-is-the-thread-that-ties-our-family-together-mothers-day-thro", "title": "\"Your Love Is The Thread That Ties Our Family Together\" - Mothers Day Throw", "link": "https://auralyncollective.com/products/your-love-is-the-thread-that-ties-our-family-together-mothers-day-throw", "img": "https://auralyncollective.com/cdn/shop/files/9304910707403643924_2048.jpg?v=1776318031&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Home Gifts", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the home gifts collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "grandma-mothers-day-tee", "title": "'Grandma' Mothers Day Tee", "link": "https://auralyncollective.com/products/grandma-mothers-day-tee", "img": "https://auralyncollective.com/cdn/shop/files/13928960809885515359_2048.jpg?v=1776282778&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "agate-beaded-bracelet", "title": "Agate Beaded Bracelet", "link": "https://auralyncollective.com/products/agate-beaded-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/c4ccabd36c4e42b8a945ee6b1e95fcaf-Max.jpg?v=1775533329&width=1200", "price": "$26.00 USD", "priceNum": 26.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "angel-art-t-shirt-rise-in-grace-spiritual-graphic-tee", "title": "Angel Art T-Shirt — \"Rise in Grace\" Spiritual Graphic Tee", "link": "https://auralyncollective.com/products/angel-art-t-shirt-rise-in-grace-spiritual-graphic-tee", "img": "https://auralyncollective.com/cdn/shop/files/15667653973328879140_2048.jpg?v=1775673921&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "baller-shot-caller-baseball-t-shirt", "title": "Baller Shot Caller Baseball T-Shirt", "link": "https://auralyncollective.com/products/baller-shot-caller-baseball-t-shirt", "img": "https://auralyncollective.com/cdn/shop/files/1436774138173037660_2048.jpg?v=1775618350&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "blessed-mothers-day-shirt-mimi", "title": "Blessed Mothers Day Shirt- \"Mimi\"", "link": "https://auralyncollective.com/products/blessed-mothers-day-shirt-mimi", "img": "https://auralyncollective.com/cdn/shop/files/9441649352819818537_2048.jpg?v=1776289208&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "blessed-nana-mothers-day-tee", "title": "Blessed Nana- Mothers Day Tee", "link": "https://auralyncollective.com/products/blessed-nana-mothers-day-tee", "img": "https://auralyncollective.com/cdn/shop/files/14507861429052947353_2048.jpg?v=1776288788&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "canvas-tote-bag-balance-guides-me-libra", "title": "Canvas Tote Bag — \"Balance Guides Me\" -Libra", "link": "https://auralyncollective.com/products/canvas-tote-bag-balance-guides-me-libra", "img": "https://auralyncollective.com/cdn/shop/files/167860694664151535_2048.jpg?v=1775798592&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "canvas-tote-bag-i-embrace-transformation-scorpio", "title": "Canvas Tote Bag — \"I Embrace Transformation\" -Scorpio", "link": "https://auralyncollective.com/products/canvas-tote-bag-i-embrace-transformation-scorpio", "img": "https://auralyncollective.com/cdn/shop/files/16004918458752498478_2048.jpg?v=1775798423&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "canvas-tote-bag-aim-true-shine-bright-sagittarius", "title": "Canvas Tote Bag — 'Aim True, Shine Bright' -Sagittarius", "link": "https://auralyncollective.com/products/canvas-tote-bag-aim-true-shine-bright-sagittarius", "img": "https://auralyncollective.com/cdn/shop/files/6195388859108548970_2048.jpg?v=1775798259&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "canvas-tote-bag-grounded-worthy-steady-abundant-taurus", "title": "Canvas Tote Bag — 'Grounded • Worthy • Steady • Abundant'- Taurus", "link": "https://auralyncollective.com/products/canvas-tote-bag-grounded-worthy-steady-abundant-taurus", "img": "https://auralyncollective.com/cdn/shop/files/1567592161273503671_2048.jpg?v=1775799283&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "canvas-tote-bag-you-are-seen-you-are-heard-you-are-loved-cancer", "title": "Canvas Tote Bag — 'You Are Seen, You Are Heard, You Are Loved' -Cancer", "link": "https://auralyncollective.com/products/canvas-tote-bag-you-are-seen-you-are-heard-you-are-loved-cancer", "img": "https://auralyncollective.com/cdn/shop/files/8645290618265249452_2048.jpg?v=1775799020&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "coffee-mug-everything-i-am-i-owe-to-you", "title": "Coffee Mug – \"Everything I Am, I Owe to You\"", "link": "https://auralyncollective.com/products/coffee-mug-everything-i-am-i-owe-to-you", "img": "https://auralyncollective.com/cdn/shop/files/15521990261719048481_2048.jpg?v=1776320301&width=1200", "price": "$12.99 USD", "priceNum": 12.99, "category": "Home Gifts", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the home gifts collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "coffee-mug-soul-brewed-spiritual-coffee-cup-but-first-coffee", "title": "Coffee Mug — \"Soul Brewed\" Spiritual Coffee Cup (But First, Coffee!)", "link": "https://auralyncollective.com/products/coffee-mug-soul-brewed-spiritual-coffee-cup-but-first-coffee", "img": "https://auralyncollective.com/cdn/shop/files/13392265725965085885_2048.jpg?v=1772593287&width=1200", "price": "$15.99 USD", "priceNum": 15.99, "category": "Home Gifts", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the home gifts collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "copper-natural-stone-teardrop-shape-earrings", "title": "Copper Natural Stone Teardrop Shape Earrings", "link": "https://auralyncollective.com/products/copper-natural-stone-teardrop-shape-earrings", "img": "https://auralyncollective.com/cdn/shop/files/28680cd3-90a5-4f86-8d6e-138bbc3f5f26-Max.webp?v=1775534103&width=1200", "price": "$13.00 USD", "priceNum": 13.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "cotton-tote-bag-listen-with-my-heart-aquarius", "title": "Cotton Tote Bag — \"Listen with My Heart\" -Aquarius", "link": "https://auralyncollective.com/products/cotton-tote-bag-listen-with-my-heart-aquarius", "img": "https://auralyncollective.com/cdn/shop/files/14791165909615034743_2048.jpg?v=1775799530&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Zodiac Edit", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "crewneck-sweatshirt-surround-yourself-with-positive-vibes", "title": "Crewneck Sweatshirt — \"Surround Yourself with Positive Vibes\"", "link": "https://auralyncollective.com/products/crewneck-sweatshirt-surround-yourself-with-positive-vibes", "img": "https://auralyncollective.com/cdn/shop/files/9788161619211742473_2048.jpg?v=1772783025&width=1200", "price": "$42.00 USD", "priceNum": 42.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "crystal-bead-bracelet", "title": "Crystal Bead Bracelet", "link": "https://auralyncollective.com/products/crystal-bead-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/521aaa25b6e14a0bb9438b798e28d293-Max.jpg?v=1775533017&width=1200", "price": "$27.00 USD", "priceNum": 27.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "embroidered-cuffed-auralyn-beanie", "title": "Embroidered Cuffed AuraLyn Beanie", "link": "https://auralyncollective.com/products/embroidered-cuffed-auralyn-beanie", "img": "https://auralyncollective.com/cdn/shop/files/6810066165087113445_2048.jpg?v=1772851573&width=1200", "price": "$17.00 USD", "priceNum": 17.0, "category": "Accessories", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the accessories collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "geometrical-shape-natural-stone-dangle-earrings", "title": "Geometrical Shape Natural Stone Dangle Earrings", "link": "https://auralyncollective.com/products/geometrical-shape-natural-stone-dangle-earrings", "img": "https://auralyncollective.com/cdn/shop/files/0dc4c12991c1441d91c6c7257a66809d-Max.jpg?v=1775534116&width=1200", "price": "$13.00 USD", "priceNum": 13.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "geometrical-shape-triple-layer-bracelet", "title": "Geometrical Shape Triple-Layer Bracelet", "link": "https://auralyncollective.com/products/geometrical-shape-triple-layer-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/23afcab6d0e94e65a66bb31809f483b1-Max.jpg?v=1775534005&width=1200", "price": "$26.00 USD", "priceNum": 26.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "grandma-s-kitchen-apron", "title": "Grandma's Kitchen Apron —", "link": "https://auralyncollective.com/products/grandmas-kitchen-apron", "img": "https://auralyncollective.com/cdn/shop/files/14330496742126949575_2048.jpg?v=1776318947&width=1200", "price": "$35.00 USD", "priceNum": 35.0, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "grandma-s-kitchen-cotton-tea-towel", "title": "Grandma's Kitchen Cotton Tea Towel —", "link": "https://auralyncollective.com/products/grandmas-kitchen-cotton-tea-towel", "img": "https://auralyncollective.com/cdn/shop/files/17757513473840294544_2048.jpg?v=1776318599&width=1200", "price": "$14.99 USD", "priceNum": 14.99, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "handmade-heart-shape-natural-stone-bracelet", "title": "Handmade Heart Shape Natural Stone Bracelet", "link": "https://auralyncollective.com/products/handmade-heart-shape-natural-stone-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/6445d60700f74d9e8f0840ca5ae9c5ea-Max.jpg?v=1775534290&width=1200", "price": "$14.00 USD", "priceNum": 14.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "handmade-natural-stone-teardrop-earrings", "title": "Handmade Natural Stone Teardrop Earrings", "link": "https://auralyncollective.com/products/handmade-natural-stone-teardrop-earrings", "img": "https://auralyncollective.com/cdn/shop/files/0518722071ff4714ab9d5576af2205a1-Max.jpg?v=1775534405&width=1200", "price": "$14.00 USD", "priceNum": 14.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "handmade-triple-layer-beaded-bracelet", "title": "Handmade Triple Layer Beaded Bracelet", "link": "https://auralyncollective.com/products/handmade-triple-layer-beaded-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/8d1ae98a8e734e5ea6bd3792b59b4ccf-Max.jpg?v=1775533981&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "heart-charm-beaded-bracelet", "title": "Heart Charm Beaded Bracelet", "link": "https://auralyncollective.com/products/heart-charm-beaded-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/c7bdaa67-436c-43ab-ba9a-1b5f8d2f5d0f-Max-Origin.webp?v=1775533823&width=1200", "price": "$15.10 USD", "priceNum": 15.1, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "heart-layered-bracelet", "title": "Heart Layered Bracelet", "link": "https://auralyncollective.com/products/heart-layered-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/b34fea95cc7e465b850ecd9a196ec00b-Max.jpg?v=1775533221&width=1200", "price": "$27.00 USD", "priceNum": 27.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "heart-shape-beaded-bracelet", "title": "Heart Shape Beaded Bracelet", "link": "https://auralyncollective.com/products/heart-shape-beaded-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/7524c76aeb4b42d1bdcb75890009a5f9-Max.jpg?v=1775533537&width=1200", "price": "$14.00 USD", "priceNum": 14.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "hei-hei-spirit-animal-t-shirt", "title": "Hei Hei Spirit Animal T-Shirt", "link": "https://auralyncollective.com/products/hei-hei-spirit-animal-t-shirt", "img": "https://auralyncollective.com/cdn/shop/files/14184923967324921386_2048.jpg?v=1773979127&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "i-match-energy-women-s-boxy-tee", "title": "I Match Energy Women's Boxy Tee", "link": "https://auralyncollective.com/products/i-match-energy-womens-boxy-tee", "img": "https://auralyncollective.com/cdn/shop/files/17890817081714211274_2048.jpg?v=1773152564&width=1200", "price": "$22.00 USD", "priceNum": 22.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "imperial-jasper-beaded-bracelet", "title": "Imperial Jasper Beaded Bracelet", "link": "https://auralyncollective.com/products/imperial-jasper-beaded-bracelet", "img": "https://auralyncollective.com/cdn/shop/files/b2bec47208da4a078b59b56e87cfabd8-Max.jpg?v=1775533618&width=1200", "price": "$18.00 USD", "priceNum": 18.0, "category": "Jewelry", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the jewelry collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "jesus-loves-you-floral-cross-tank", "title": "Jesus Loves You Floral Cross Tank", "link": "https://auralyncollective.com/products/jesus-loves-you-floral-cross-tank", "img": "https://auralyncollective.com/cdn/shop/files/6754239355606132912_2048.jpg?v=1777303887&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "jesus-loves-you-floral-cross-women-s-tee", "title": "Jesus Loves You Floral Cross Women's Tee -", "link": "https://auralyncollective.com/products/jesus-loves-you-floral-cross-womens-tee", "img": "https://auralyncollective.com/cdn/shop/files/13060079101780197339_2048.jpg?v=1777302589&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "jesus-loves-you-floral-racerback-tank", "title": "Jesus Loves You Floral Racerback Tank —", "link": "https://auralyncollective.com/products/jesus-loves-you-floral-racerback-tank", "img": "https://auralyncollective.com/cdn/shop/files/9109872191688021572_2048.jpg?v=1777303262&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "meditation-soy-candle-9oz-scented-jar-for-mindfulness-relaxation", "title": "Meditation Soy Candle — 9oz Scented Jar for Mindfulness & Relaxation", "link": "https://auralyncollective.com/products/meditation-soy-candle-9oz-scented-jar-for-mindfulness-relaxation", "img": "https://auralyncollective.com/cdn/shop/files/3861398394226276425_2048.jpg?v=1772572560&width=1200", "price": "$18.00 USD", "priceNum": 18.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "meditation-soy-candle-amber-jar-scented-candle-for-relaxation-mindfuln", "title": "Meditation Soy Candle — Amber Jar Scented Candle for Relaxation & Mindfulness", "link": "https://auralyncollective.com/products/meditation-soy-candle-amber-jar-scented-candle-for-relaxation-mindfulness", "img": "https://auralyncollective.com/cdn/shop/files/2168343485879451609_2048.jpg?v=1772580493&width=1200", "price": "$15.55 USD", "priceNum": 15.55, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mom-floral-pocket-t-shirt", "title": "Mom Floral Pocket T-Shirt", "link": "https://auralyncollective.com/products/mom-floral-pocket-t-shirt", "img": "https://auralyncollective.com/cdn/shop/files/652421641566644055_2048.jpg?v=1776225256&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mom-heart-canvas-tote-bag", "title": "Mom Heart Canvas Tote Bag", "link": "https://auralyncollective.com/products/mom-heart-canvas-tote-bag", "img": "https://auralyncollective.com/cdn/shop/files/13455197437710670701_2048.jpg?v=1776181205&width=1200", "price": "$16.00 USD", "priceNum": 16.0, "category": "Totes", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the totes collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mom-heart-floral-graphic-t-shirt", "title": "Mom Heart Floral Graphic T-Shirt", "link": "https://auralyncollective.com/products/mom-heart-floral-graphic-t-shirt", "img": "https://auralyncollective.com/cdn/shop/files/175311492991238270_2048.jpg?v=1776180726&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mom-heart-graphic-t-shirt", "title": "Mom Heart Graphic T-Shirt", "link": "https://auralyncollective.com/products/mom-heart-graphic-t-shirt", "img": "https://auralyncollective.com/cdn/shop/files/14220610363088206625_2048.jpg?v=1776181473&width=1200", "price": "$25.00 USD", "priceNum": 25.0, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "mom-scented-candle-coconut-apricot-wax-4oz-9oz", "title": "Mom Scented Candle – Coconut Apricot Wax (4oz & 9oz)", "link": "https://auralyncollective.com/products/mom-scented-candle-coconut-apricot-wax-4oz-9oz", "img": "https://auralyncollective.com/cdn/shop/files/1288804283151582300_2048.jpg?v=1776315473&width=1200", "price": "$17.58 USD", "priceNum": 17.58, "category": "Apparel", "occasion": "Everyday Ritual", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}, {"id": "motherhood-tee-vintage-gothic-script-with-butterflies", "title": "Motherhood Tee — Vintage Gothic Script with Butterflies", "link": "https://auralyncollective.com/products/motherhood-tee-vintage-gothic-script-with-butterflies", "img": "https://auralyncollective.com/cdn/shop/files/398895876302893553_2048.jpg?v=1776288997&width=1200", "price": "$20.00 USD", "priceNum": 20.0, "category": "Apparel", "occasion": "Mother's Day", "desc": "A polished AuraLyn piece from the apparel collection, styled for intentional gifting, self-expression, and everyday spiritual energy."}];
+let state = { category:'All', occasion:'All', price:'All', search:'', sort:'featured', cart: JSON.parse(localStorage.getItem('auralynCart') || '{}') };
+const grid=document.getElementById('productGrid'), note=document.getElementById('resultNote'), empty=document.getElementById('emptyState');
+function money(n){return '$'+n.toFixed(2)}
+function productCard(p){return `<article class="product-card"><button class="quick-view" data-id="${p.id}" aria-label="View ${p.title.replaceAll('"','&quot;')}"><img loading="lazy" src="${p.img}" alt="${p.title.replaceAll('"','&quot;')}"></button><div class="product-info"><span class="pill">${p.category}</span><h3>${p.title}</h3><p>${p.occasion}</p><div class="product-row"><strong>${p.price}</strong><button class="mini-btn add-cart" data-id="${p.id}">Add</button></div></div></article>`}
+function filtered(){let list=PRODUCTS.filter(p=>{let ok=true; if(state.category!=='All') ok=ok&&p.category===state.category; if(state.occasion!=='All') ok=ok&&p.occasion===state.occasion; if(state.search.trim()) ok=ok&&(p.title+' '+p.category+' '+p.occasion).toLowerCase().includes(state.search.toLowerCase().trim()); if(state.price!=='All'){const [min,max]=state.price.split('-').map(Number); ok=ok&&p.priceNum>=min&&p.priceNum<max;} return ok;}); if(state.sort==='low') list.sort((a,b)=>a.priceNum-b.priceNum); if(state.sort==='high') list.sort((a,b)=>b.priceNum-a.priceNum); if(state.sort==='az') list.sort((a,b)=>a.title.localeCompare(b.title)); return list;}
+function render(){const list=filtered(); grid.innerHTML=list.map(productCard).join(''); empty.style.display=list.length?'none':'block'; note.textContent=`Showing ${list.length} of ${PRODUCTS.length} products`; bindProductButtons();}
+function bindProductButtons(){document.querySelectorAll('.quick-view').forEach(b=>b.onclick=()=>openProduct(b.dataset.id)); document.querySelectorAll('.add-cart').forEach(b=>b.onclick=()=>addCart(b.dataset.id));}
+document.getElementById('searchInput').addEventListener('input',e=>{state.search=e.target.value;render();}); document.getElementById('occasionSelect').addEventListener('change',e=>{state.occasion=e.target.value;render();}); document.getElementById('priceSelect').addEventListener('change',e=>{state.price=e.target.value;render();}); document.getElementById('sortSelect').addEventListener('change',e=>{state.sort=e.target.value;render();}); document.querySelectorAll('.chip').forEach(chip=>chip.onclick=()=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');state.category=chip.dataset.category;render();}); document.getElementById('clearFilters').onclick=()=>{state={...state,category:'All',occasion:'All',price:'All',search:'',sort:'featured'};document.getElementById('searchInput').value='';document.getElementById('occasionSelect').value='All';document.getElementById('priceSelect').value='All';document.getElementById('sortSelect').value='featured';document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.category==='All'));render();};
+document.querySelectorAll('[data-filter-link]').forEach(a=>a.onclick=()=>setTimeout(()=>{const target=a.dataset.filterLink;document.querySelector(`.chip[data-category="${target}"]`)?.click();},50)); document.querySelector('[data-focus-search]').onclick=()=>{location.hash='shop';setTimeout(()=>document.getElementById('searchInput').focus(),250)};
+function openProduct(id){const p=PRODUCTS.find(x=>x.id===id); if(!p)return; document.getElementById('modalImg').src=p.img; document.getElementById('modalImg').alt=p.title; document.getElementById('modalCat').textContent=p.category; document.getElementById('modalTitle').textContent=p.title; document.getElementById('modalPrice').textContent=p.price; document.getElementById('modalDesc').textContent=p.desc; document.getElementById('modalOriginal').href=p.link; document.getElementById('modalAdd').onclick=()=>addCart(p.id); document.getElementById('productModal').classList.add('open'); location.hash='product='+p.id;}
+function closeModal(){document.getElementById('productModal').classList.remove('open'); if(location.hash.startsWith('#product=')) history.pushState('',document.title,location.pathname+location.search)} document.querySelectorAll('[data-close-modal]').forEach(x=>x.onclick=closeModal);
+function saveCart(){localStorage.setItem('auralynCart',JSON.stringify(state.cart)); renderCart();} function addCart(id){state.cart[id]=(state.cart[id]||0)+1; saveCart(); document.getElementById('cartDrawer').classList.add('open');} function updateQty(id,delta){state.cart[id]=(state.cart[id]||0)+delta; if(state.cart[id]<=0) delete state.cart[id]; saveCart();}
+function renderCart(){const wrap=document.getElementById('cartItems'); const ids=Object.keys(state.cart); document.getElementById('cartCount').textContent=ids.reduce((s,id)=>s+state.cart[id],0); if(!ids.length){wrap.innerHTML='<p>Your cart is empty. Add a few soulful pieces from the catalog.</p>'; document.getElementById('cartTotal').textContent='$0.00'; return;} let total=0; wrap.innerHTML=ids.map(id=>{const p=PRODUCTS.find(x=>x.id===id); const q=state.cart[id]; total+=p.priceNum*q; return `<div class="cart-line"><img src="${p.img}" alt="${p.title.replaceAll('"','&quot;')}"><div><strong>${p.title}</strong><div>${p.price}</div><div class="qty"><button onclick="updateQty('${id}',-1)">−</button><span>${q}</span><button onclick="updateQty('${id}',1)">+</button></div></div><button class="close" onclick="updateQty('${id}',-${q})">×</button></div>`}).join(''); document.getElementById('cartTotal').textContent=money(total);}
+document.getElementById('cartOpen').onclick=()=>document.getElementById('cartDrawer').classList.add('open'); document.querySelectorAll('[data-close-cart]').forEach(x=>x.onclick=()=>document.getElementById('cartDrawer').classList.remove('open'));
+document.getElementById('checkoutBtn').onclick=()=>{const n=document.getElementById('checkoutName'), e=document.getElementById('checkoutEmail'), a=document.getElementById('checkoutAddress'); if(!n.value.trim()||!e.checkValidity()||!a.value.trim()){alert('Please enter a valid name, email, and shipping address.');return;} document.getElementById('checkoutSuccess').style.display='block';};
+document.getElementById('customForm').addEventListener('submit',e=>{e.preventDefault(); document.getElementById('customSuccess').style.display='block';}); document.querySelectorAll('[data-quiz]').forEach(b=>b.onclick=()=>{const vibe=b.dataset.quiz; document.getElementById('quizResult').innerHTML=`<div class="kicker">Your match</div><h2>${vibe}</h2><p>We filtered the catalog to pieces that match this energy. Scroll up to shop the edit.</p><a class="btn primary" href="#shop">Shop this vibe</a>`; document.getElementById('occasionSelect').value=vibe; state.occasion=vibe; render();});
+window.addEventListener('load',()=>{render(); renderCart(); if(location.hash.startsWith('#product=')) openProduct(location.hash.replace('#product=',''));}); document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();document.getElementById('cartDrawer').classList.remove('open')}});
+</script>
+</body>
+</html>
